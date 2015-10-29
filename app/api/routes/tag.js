@@ -35,6 +35,15 @@ module.exports = function(app) {
   app.get('/tags/:name', loadTag, function(req, res, next) {
     res.json(req.tag);
   });
+  
+  app.get('/tags/:name/checks', loadTag, function(req, res, next) {
+    req.tag.getChecks(function(err, data) {
+      if (err) {
+        res.json(false);
+      }
+      res.json(data);
+    });
+  });
 
   app.get('/tags/:name/checks/:period/:timestamp', loadTag, function(req, res, next) {
     req.tag.getChecksForPeriod(req.params.period, new Date(parseInt(req.params.timestamp)), function(err, checks) {
